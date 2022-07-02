@@ -19,4 +19,5 @@ Instructions:
 - I think I will add a fourth instruction later which will allow you to add bits to the parameters of the previous instruction, increasing the limit.
         
 ## Usage
-https://cdn.discordapp.com/attachments/722308822718218292/992924926979874907/BSP_demo.mp4
+https://user-images.githubusercontent.com/38643612/177018187-91aa0f1f-1d8f-4547-b97c-f4c6d5cac6ab.mp4
+
