@@ -18,3 +18,5 @@ Instructions:
 - The other bits are the parameters. Unfortunately, this means the maximum for any parameter is 32, hence the image size limit.
 - I think I will add a fourth instruction later which will allow you to add bits to the parameters of the previous instruction, increasing the limit.
         
+## Usage
+https://cdn.discordapp.com/attachments/722308822718218292/992924926979874907/BSP_demo.mp4
