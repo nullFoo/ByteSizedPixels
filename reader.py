@@ -1,5 +1,7 @@
-path = input("file path")
 from PIL import Image, ImageColor
+import math
+
+path = input("file path")
 
 width = 0
 height = 0
@@ -18,22 +20,21 @@ def movePixel():
         
     global curX
     global curY
+    
+    print("(" + str(curX) + ", " + str(curY) + ")")
 
     img.putpixel((curX, curY), colour)
     
     curX += 1
-    if(curX > width):
+    if(curX > width-1):
         curX = 0
         curY += 1
-        if(curY > height):
-            exit()
 
 with open(path, "rb") as f:
     byte = f.read(1)
     while byte:
         byte = f.read(1)
         if(byte != ""):
-            print(" ")
             try:
                 bits = ord(byte)
             except:
@@ -47,26 +48,32 @@ with open(path, "rb") as f:
                 instruction = int(bits[1] + bits[2], 2)
                 
                 if(instruction == 1): # set width
-                    param = ''.join(bits[2:])
+                    param = ''.join(bits[3:])
+                    print(" " + param)
                     width = int(param, 2)
                 elif(instruction == 2): # set height
-                    param = ''.join(bits[2:])
+                    param = ''.join(bits[3:])
+                    print(" " + param)
                     height = int(param, 2)
                 elif(instruction == 3): # previous colour continues for [param] pixels
-                    param = ''.join(bits[2:])
-                    for x in range(param)
+                    param = ''.join(bits[3:])
+                    for x in range(param):
                         movePixel()
             else: # this byte is a colour
-                r = int(''.join(bits[:2]), 2)
-                g = int(''.join(bits[2:4]), 2)
-                b = int(''.join(bits[4:6]), 2)
+                r = int(''.join(bits[1:3]), 2)
+                g = int(''.join(bits[3:5]), 2)
+                b = int(''.join(bits[5:7]), 2)
                 a = int(bits[7])
                 
                 if(img == 0):
                     print("File headers missing")
                     exit()
                 
-                colour = (r * 64, g * 64, b * 64, a * 255)
+                r = math.floor(r * 63.75)
+                g = math.floor(g * 63.75)
+                b = math.floor(b * 63.75)
+                
+                colour = (r, g, b, a * 255)
                 currentColour = colour
                 print(colour)
                 
@@ -75,4 +82,8 @@ with open(path, "rb") as f:
             if(img == 0 and width != 0 and height != 0):
                 img = Image.new(mode="RGB", size=(width, height))
                 print((width, height))
+            
+            if(img != 0 and curY > height-1):
+                break
     img.show()
+    print("done")
