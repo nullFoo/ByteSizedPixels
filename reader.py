@@ -20,8 +20,6 @@ def movePixel():
         
     global curX
     global curY
-    
-    print("(" + str(curX) + ", " + str(curY) + ")")
 
     img.putpixel((curX, curY), colour)
     
@@ -49,11 +47,9 @@ with open(path, "rb") as f:
                 
                 if(instruction == 1): # set width
                     param = ''.join(bits[3:])
-                    print(" " + param)
                     width = int(param, 2)
                 elif(instruction == 2): # set height
                     param = ''.join(bits[3:])
-                    print(" " + param)
                     height = int(param, 2)
                 elif(instruction == 3): # previous colour continues for [param] pixels
                     param = ''.join(bits[3:])
@@ -75,13 +71,11 @@ with open(path, "rb") as f:
                 
                 colour = (r, g, b, a * 255)
                 currentColour = colour
-                print(colour)
                 
                 movePixel()
                 
             if(img == 0 and width != 0 and height != 0):
                 img = Image.new(mode="RGB", size=(width, height))
-                print((width, height))
             
             if(img != 0 and curY > height-1):
                 break

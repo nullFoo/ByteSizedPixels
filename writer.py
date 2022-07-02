@@ -43,7 +43,7 @@ for i in range(width * height):
     b = math.floor(b / 64)
     a = math.ceil(a / 255)
     
-    byte = "0" + str(bin(r))[2:] + str(bin(g))[2:] + str(bin(b))[2:] + str(bin(a))[2:]
+    byte = "0" + str(bin(r))[2:].zfill(2) + str(bin(g))[2:].zfill(2) + str(bin(b))[2:].zfill(2) + str(bin(a))[2:]
     
     arr.append(int(byte, 2))
         
