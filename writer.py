@@ -34,6 +34,9 @@ arr.append(int(heightBin, 2))
 x = 0
 y = 0
 
+prevcolor = (-1,0,0,0)
+compressionbuffer = 0
+
 for i in range(width * height):
     r,g,b = im.getpixel((x,y))
     a = alphaImg.getpixel((x,y))
@@ -43,9 +46,30 @@ for i in range(width * height):
     b = math.floor(b / 64)
     a = math.ceil(a / 255)
     
-    byte = "0" + str(bin(r))[2:].zfill(2) + str(bin(g))[2:].zfill(2) + str(bin(b))[2:].zfill(2) + str(bin(a))[2:]
     
-    arr.append(int(byte, 2))
+    if(prevcolor == (r, g, b, a)):
+        compressionbuffer += 1
+        
+        if(compressionbuffer > 30):
+            byte = "111" + str(bin(compressionbuffer))[2:].zfill(5)
+            arr.append(int(byte, 2))
+            
+            byte = "0" + str(bin(r))[2:].zfill(2) + str(bin(g))[2:].zfill(2) + str(bin(b))[2:].zfill(2) + str(bin(a))[2:]
+            arr.append(int(byte, 2))
+            
+            compressionbuffer = 0
+    else:
+        if(compressionbuffer > 0):
+            byte = "111" + str(bin(compressionbuffer))[2:].zfill(5)
+            arr.append(int(byte, 2))
+            compressionbuffer = 0
+        
+        byte = "0" + str(bin(r))[2:].zfill(2) + str(bin(g))[2:].zfill(2) + str(bin(b))[2:].zfill(2) + str(bin(a))[2:]
+        arr.append(int(byte, 2))
+        
+        
+    print(str(prevcolor) + " | " + str((r, g, b, a)))
+    prevcolor = (r, g, b, a)
         
     x += 1
     if(x > width-1):

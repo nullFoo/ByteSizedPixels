@@ -39,8 +39,8 @@ with open(path, "rb") as f:
                 break
             bits = bin(bits)[2:].rjust(8, '0')
             
-            for bit in bits:
-                print(bit, end="")
+            #for bit in bits:
+            #    print(bit, end="")
                 
             if(bits[0] == "1"): # this byte is an instruction
                 instruction = int(bits[1] + bits[2], 2)
@@ -52,8 +52,10 @@ with open(path, "rb") as f:
                     param = ''.join(bits[3:])
                     height = int(param, 2)
                 elif(instruction == 3): # previous colour continues for [param] pixels
+                    print(str(bits))
                     param = ''.join(bits[3:])
-                    for x in range(param):
+                    print(str(currentColour) + " * " + param)
+                    for x in range(int(param, 2)):
                         movePixel()
             else: # this byte is a colour
                 r = int(''.join(bits[1:3]), 2)
