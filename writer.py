@@ -14,7 +14,7 @@ alphaImg = out.getchannel("A")
 
 width, height = im.size
 
-if(width > 32 or height > 32):
+if(width > 31 or height > 31):
     print("image too large: width and height must both be <32")
     exit()
 
@@ -38,8 +38,11 @@ prevcolor = (-1,0,0,0)
 compressionbuffer = 0
 
 for i in range(width * height):
-    r,g,b = im.getpixel((x,y))
-    a = alphaImg.getpixel((x,y))
+    try:
+        r,g,b,a = im.getpixel((x,y))
+    except:
+        r,g,b = im.getpixel((x,y))
+        a = alphaImg.getpixel((x,y))
     
     r = math.floor(r / 64)
     g = math.floor(g / 64)
@@ -50,25 +53,32 @@ for i in range(width * height):
     if(prevcolor == (r, g, b, a)):
         compressionbuffer += 1
         
-        if(compressionbuffer > 30):
+        if(compressionbuffer > 30 or i > (width * height) - 1):
             byte = "111" + str(bin(compressionbuffer))[2:].zfill(5)
             arr.append(int(byte, 2))
+            if(int(byte, 2) > 254):
+                print(int(byte, 2))
             
             byte = "0" + str(bin(r))[2:].zfill(2) + str(bin(g))[2:].zfill(2) + str(bin(b))[2:].zfill(2) + str(bin(a))[2:]
             arr.append(int(byte, 2))
+            if(int(byte, 2) > 254):
+                print(int(byte, 2))
             
             compressionbuffer = 0
     else:
         if(compressionbuffer > 0):
             byte = "111" + str(bin(compressionbuffer))[2:].zfill(5)
             arr.append(int(byte, 2))
+            if(int(byte, 2) > 254):
+                print(int(byte, 2))
             compressionbuffer = 0
         
         byte = "0" + str(bin(r))[2:].zfill(2) + str(bin(g))[2:].zfill(2) + str(bin(b))[2:].zfill(2) + str(bin(a))[2:]
+        if(int(byte, 2) > 254):
+            print(int(byte, 2))
         arr.append(int(byte, 2))
         
         
-    print(str(prevcolor) + " | " + str((r, g, b, a)))
     prevcolor = (r, g, b, a)
         
     x += 1
