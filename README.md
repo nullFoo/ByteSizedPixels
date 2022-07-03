@@ -5,7 +5,7 @@ an image format
 - There are two bits per channel, meaning only 64 possible colours (images with more colours will be converted automatically, no need to make sure you're using 2-bit colour)
 - Images must be under 32x32
 
-This is an image format I made. It's not efficient or good but it was fun to make. I will add some compression to it later.
+This is an image format I made. It's not efficient or good but it was fun to make.
 
 ## For each byte in a file:
 First bit: 0 means it is a colour, 1 means it is an instruction
